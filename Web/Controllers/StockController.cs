@@ -3,7 +3,7 @@ using Core.DTO;
 using Core.Mapper;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Web;
+namespace Web.Controllers;
 
 [Route("api/stock")]
 [ApiController]
