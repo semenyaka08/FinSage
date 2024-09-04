@@ -1,6 +1,7 @@
 using Core.Domain.RepositoryContracts;
 using Core.DTO;
 using Core.Mapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers;
@@ -16,6 +17,7 @@ public class StockController : ControllerBase
         _stockRepository = stockRepository;
     }
     
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetAllStocks([FromQuery] StockGetRequest stockGetRequest)
     {
@@ -24,6 +26,7 @@ public class StockController : ControllerBase
         return Ok(stocks.Select(z=>z.ToStockGetResponse()));
     }
 
+    [Authorize]
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetStockById([FromRoute] int id)
     {
