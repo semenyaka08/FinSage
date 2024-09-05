@@ -1,6 +1,7 @@
 using Core.Domain.RepositoryContracts;
 using Core.DTO;
 using Core.Mapper;
+using Infrastructure.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +18,6 @@ public class StockController : ControllerBase
         _stockRepository = stockRepository;
     }
     
-    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetAllStocks([FromQuery] StockGetRequest stockGetRequest)
     {
@@ -26,7 +26,6 @@ public class StockController : ControllerBase
         return Ok(stocks.Select(z=>z.ToStockGetResponse()));
     }
 
-    [Authorize]
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetStockById([FromRoute] int id)
     {
@@ -40,6 +39,7 @@ public class StockController : ControllerBase
         return Ok(stock.ToStockGetResponse());
     }
 
+    [HasPermission(Permission.UpdateMember)]
     [HttpPost]
     public async Task<IActionResult> AddStock([FromBody] StockAddRequest addRequest)
     {
@@ -53,6 +53,7 @@ public class StockController : ControllerBase
         return CreatedAtAction(nameof(GetStockById), new { id = stock.Id }, stock.ToStockGetResponse());
     }
 
+    [HasPermission(Permission.UpdateMember)]
     [HttpPut("{id:int}")]
     public async Task<IActionResult> UpdateStock([FromRoute] int id, [FromBody] StockUpdateRequest stockUpdateRequest)
     {
@@ -65,7 +66,8 @@ public class StockController : ControllerBase
 
         return Ok(updatedStock);
     }
-
+    
+    [HasPermission(Permission.UpdateMember)]
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteStock([FromRoute] int id)
     {

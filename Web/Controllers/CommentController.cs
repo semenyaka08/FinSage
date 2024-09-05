@@ -1,6 +1,8 @@
 using Core.Domain.RepositoryContracts;
 using Core.DTO;
 using Core.Mapper;
+using Infrastructure.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers;
@@ -17,7 +19,7 @@ public class CommentController : ControllerBase
         _commentRepository = commentRepository;
         _stockRepository = stockRepository;
     }
-
+    
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetCommentById([FromRoute] int id)
     {
@@ -28,7 +30,7 @@ public class CommentController : ControllerBase
 
         return Ok(comment.ToCommentGetResponse());
     }
-
+    
     [HttpGet]
     public async Task<IActionResult> GetAllComments()
     {
@@ -37,6 +39,7 @@ public class CommentController : ControllerBase
         return Ok(comments.Select(z=>z.ToCommentGetResponse()));
     }
 
+    [HasPermission(Permission.ReadMember)]
     [HttpPost("{stockId:int}")]
     public async Task<IActionResult> AddComment([FromRoute]int stockId, [FromBody] CommentAddRequest addRequest)
     {
@@ -55,6 +58,7 @@ public class CommentController : ControllerBase
         return CreatedAtAction(nameof(GetCommentById), new {id = comment.Id}, comment.ToCommentGetResponse());
     }
 
+    [HasPermission(Permission.ReadMember)]
     [HttpPut]
     public async Task<IActionResult> UpdateComment([FromQuery] int id, [FromBody] CommentUpdateRequest updateRequest)
     {
@@ -71,6 +75,7 @@ public class CommentController : ControllerBase
         return Ok(result.ToCommentGetResponse());
     }
 
+    [HasPermission(Permission.ReadMember)]
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteComment([FromRoute] int id)
     {

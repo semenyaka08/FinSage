@@ -13,4 +13,8 @@ public class User
     public ICollection<Stock> Stocks { get; set; } = [];
 
     public ICollection<Comment> Comments { get; set; } = [];
+
+    public Role Role { get; set; } = null!;
+
+    public int RoleId { get; set; } 
 }

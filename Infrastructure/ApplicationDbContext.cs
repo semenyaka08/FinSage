@@ -13,4 +13,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<Comment> Comments { get; set; }
 
     public DbSet<User> Users { get; set; }
+
+    public DbSet<Permission> Permissions { get; set; }
+
+    public DbSet<Role> Roles { get; set; }
 }
