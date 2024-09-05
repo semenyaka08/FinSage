@@ -7,13 +7,14 @@ public static class CommentMapper
 {
     public static CommentGetResponse ToCommentGetResponse(this Comment comment)
     {
-        return new CommentGetResponse(comment.Id, comment.Title,comment.Content);
+        return new CommentGetResponse(comment.Id, comment.Title,comment.Content, comment.UserId, comment.User.UserName);
     }
 
-    public static Comment ToComment(this BaseCommentRequest request, Stock stock)
+    public static Comment ToComment(this BaseCommentRequest request, Stock stock, Guid userId)
     {
         return new Comment
         {
+            UserId = userId,
             Title = request.Title,
             Content = request.Content,
             CreatedOn = DateTime.Now,

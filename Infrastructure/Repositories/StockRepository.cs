@@ -31,7 +31,9 @@ public class StockRepository : IStockRepository
 
         query = query.Skip(skipNumber).Take(stockGetRequest.PageSize);
         
-        return await query.Include(z=>z.Comments).ToListAsync();
+        return await query.Include(z=>z.Comments)
+            .ThenInclude(z=>z.User)
+            .ToListAsync();
     }
 
     private Expression<Func<Stock, object>> GetKey(string? sortItem)

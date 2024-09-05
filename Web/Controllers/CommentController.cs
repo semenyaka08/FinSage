@@ -45,17 +45,20 @@ public class CommentController : ControllerBase
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
+        
+        var userId = User.Claims.FirstOrDefault(z=>z.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
 
+        if (!Guid.TryParse(userId, out Guid parsedId))
+            return Unauthorized("Invalid user ID");
+        
         var stock = await _stockRepository.GetByIdAsync(stockId);
 
         if (stock == null)
             return NotFound("Stock with given id was not found!");
 
-        var comment = addRequest.ToComment(stock);
+        var comment = await _commentRepository.AddCommentAsync(addRequest.ToComment(stock, parsedId));
 
-        await _commentRepository.AddCommentAsync(comment);
-
-        return CreatedAtAction(nameof(GetCommentById), new {id = comment.Id}, comment.ToCommentGetResponse());
+        return CreatedAtAction(nameof(GetCommentById), new {id = comment!.Id}, comment.ToCommentGetResponse());
     }
 
     [HasPermission(Permission.ReadMember)]

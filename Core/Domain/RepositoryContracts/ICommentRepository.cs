@@ -8,7 +8,7 @@ public interface ICommentRepository
 
     public Task<List<Comment>> GetAllCommentsAsync();
 
-    public Task AddCommentAsync(Comment comment);
+    public Task<Comment?> AddCommentAsync(Comment comment);
 
     public Task<Comment?> UpdateCommentAsync(Comment updatedComment);
 
