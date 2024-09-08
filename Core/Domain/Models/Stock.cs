@@ -21,4 +21,6 @@ public class Stock
     public long MarketCap { get; set; }
 
     public ICollection<Comment> Comments { get; set; } = [];
+
+    public ICollection<User> Users { get; set; } = [];
 }
