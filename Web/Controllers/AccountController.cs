@@ -2,6 +2,7 @@ using Core.DTO.Identity;
 using Core.Mapper;
 using Core.ServiceContracts;
 using Microsoft.AspNetCore.Mvc;
+using Web.Filters;
 
 namespace Web.Controllers;
 
@@ -17,6 +18,7 @@ public class AccountController : ControllerBase
     }
     
     [HttpPost("register")]
+    [ServiceFilter(typeof(ValidateUserRegistrationFilter))]
     public async Task<IActionResult> Register([FromBody] RegisterUserRequest userRequest)
     {
         if (!ModelState.IsValid)

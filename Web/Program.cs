@@ -8,6 +8,7 @@ using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Web.Filters;
 using Web.OptionsSetup;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,6 +29,11 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IPasswordHasher, PasswordHasher>();
 builder.Services.AddTransient<IJwtProvider, JwtProvider>();
 builder.Services.AddScoped<IPermissionService, PermissionService>();
+
+//Filters
+
+builder.Services.AddScoped<ValidateUserRegistrationFilter>();
+
 //Authentication
 
 builder.Services.ConfigureOptions<JwtOptionsSetup>();
